@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager App</title>
+    <style>
+        body
+        {
+            background-color: #2e293b;
+            font-family: 'Arial Narrow Bold', sans-serif;
+        }
+        .head
+        {
+            text-align: center;
+            background-color: #221625;
+            color: #C4BDD0;
+            padding: 5px;
+        }
+        .master
+        {
+            margin: 10px;
+        }
+        .input
+        {
+            display: inline-block;
+            text-align: center;
+            background-color: #1A1625;
+            color: #F8F7FC;
+            width: 26.5%;
+            height: 700px;
+            padding: 20px 20px 20px 20px;
+            margin: 25px;
+            border-radius: 25px;
+            border: 5px double #880176 ;
+        }
+        .input input
+        {
+            width: 100%;
+            background-color: #C4BDD0;
+            border-bottom: 3px solid #880176;
+            outline: none;
+            border-radius: 7px;
+            padding: 5px;
+            margin: 50px 0px 15px -10px;
+        }
+        .input button
+        {
+            background-color: #6d0036;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px 10px 20px;
+            margin: 15px;
+            color: #fff9d8;
+        }
+        .input img
+        {
+            width: 35%;
+            margin: 20px;
+        }
+        .image
+        {
+            display: inline-block;
+            padding: 35px;
+            border: 5px solid white;
+            border-radius: 50%;
+            margin: 50px 0px 50px 0px;
+        }
+
+        .todoList
+        {
+            display: inline-block;
+            vertical-align: top;
+            background-color: #1A1625;
+            border: 5px double #880176 ;
+            border-radius: 25px;
+            height: 700px;
+            width: 61%;
+            padding: 20px 20px 20px 20px;
+            margin: 25px;
+            color: white;
+            overflow-y: auto;        
+            /* box-sizing: border-box; */
+        }
+
+        .todoList li
+        {
+            padding: 20px 0px 25px 0px;
+            border-bottom: 2px solid #8395b6;
+        }
+
+        .todoList div
+        {
+            display: inline-block;
+            float: right;
+            padding-right: 20px;
+        }
+        .todoList button
+        {
+            color: #440035;
+            background-color: #defff2;
+            padding: 2px 5px 2px 5px;
+            border-radius: 5px;
+            border: none;
+            margin: 0px 2px 0px 2px;
+        }
+
+        .foot
+        {
+            text-align: center;
+            background-color: #221625;
+            color: #C4BDD0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="head">
+        <h1><b>To Do App</b></h1>
+    </header>
+
+    <div class="master">
+        <div class="input">
+            <div class="image">
+                <img src="listicon.png" alt="list icon">
+            </div>
+            <p>Welcome!!<br>manage your tasks to be performed from here...</p>
+            <input type="text" placeholder="Enter your task here : " id="ip">
+            <button onclick="taskEntry()">Add task</button>
+        </div>
+
+        <div class="todoList">
+            <ul id="li-ele" type="disc"></ul>
+        </div>
+    </div>
+
+    <footer class="foot">
+        <div id="stats">
+            <p>Completed tasks : <b>xx</b>  ||::|::|| Pending tasks : <b>xx</b></p>
+        </div>
+    </footer>
+
+    <script>
+        
+        let taskarr = [];
+        let statearr = [];
+        var list = document.getElementById("li-ele");
+
+        function taskEntry()
+        {
+            var intask = document.getElementById("ip").value;
+            taskarr.push(intask);
+            statearr.push(false);
+
+            showTask()
+        }
+        console.log(taskarr);
+
+        function showTask()
+        {
+            list.innerHTML = "";
+            taskarr.forEach((val, i)=>{
+                if(statearr[i] == true)
+                {
+                    list.innerHTML += "<li style=\"text-decoration: line-through; color: #8395b6;\">"+val+"<div> <button id=\"delbtn\" onclick=\"delele("+ i +")\">Delete</button><button id=\"complbtn\" onclick=\"comp_ele("+ i +")\">Complete</button><button id=\"updbtn\" onclick=\"updele("+ i +")\">Update</button></div></li>";
+                }
+                else
+                {
+                    list.innerHTML += "<li>"+val+"<div> <button id=\"delbtn\" onclick=\"delele("+ i +")\">Delete</button><button id=\"complbtn\" onclick=\"comp_ele("+ i +")\">Complete</button><button id=\"updbtn\" onclick=\"updele("+ i +")\">Update</button></div></li>";
+                }
+            })
+
+            statCnt();
+        }
+        
+        function delele(i)
+        {
+            taskarr.splice(i, 1);
+            statearr.splice(i, 1);
+            showTask()
+        }        
+
+        function comp_ele(i)
+        {
+            statearr[i] = true;
+            console.log("completed");
+            showTask();
+        }
+
+        function updele(i)
+        {
+            taskarr[i] = prompt("Emnter the updated task : ");
+            showTask();
+        }
+
+        function statCnt()
+        {
+            let c_cnt=0;
+            let p_cnt=0;
+            statearr.forEach((val, i)=>{
+                if(val == false)
+                {
+                    p_cnt+=1
+                }
+                else
+                {
+                    c_cnt+=1
+                }
+            })
+
+            var stat = document.getElementById("stats");
+            stat.innerHTML = "<p>Completed tasks : <b>"+ c_cnt +"</b>"+"   "+"||::|::||"+"   "+"Pending tasks : <b>"+ p_cnt +"</b></p>";
+        }
+    </script>
+</body>
+</html>
